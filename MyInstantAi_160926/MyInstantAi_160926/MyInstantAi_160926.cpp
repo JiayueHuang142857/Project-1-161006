@@ -41,6 +41,9 @@ $NoKeywords:  $
 #include "bdaqctrl.h"
 #include "compatibility.h"
 #include <fstream>
+#include <string>
+#include <iostream>
+//int CountLines();
 using namespace std;
 using namespace Automation::BDaq;
 //-----------------------------------------------------------------------------------
@@ -50,6 +53,8 @@ using namespace Automation::BDaq;
 const wchar_t* profilePath = L"../../profile/DemoDevice.xml";
 int32          startChannel = 0;
 const int32    channelCount = 1;
+
+int dataNum = 0;
 
 inline void waitAnyKey()
 {
@@ -62,7 +67,7 @@ int main(int argc, char* argv[])
 	// Step 1: Create a 'instantAiCtrl' for InstantAI function.
 	InstantAiCtrl* instantAiCtrl = InstantAiCtrl::Create();
 	ofstream DataStoreFile("data.txt");
-	DataStoreFile << "Stored Data:" << endl;
+	//DataStoreFile << "Stored Data:" << endl;
 
 	do
 	{
@@ -88,15 +93,28 @@ int main(int argc, char* argv[])
 			// process the acquired data. only show data here.
 			for (int32 i = startChannel; i< startChannel + channelCount; ++i)
 			{
-				//DataStoreFile.open();
 				printf("Channel %d data: %10.6f\n\n", i % channelCountMax, scaledData[i - startChannel]);
 				DataStoreFile << scaledData[i - startChannel] << endl;
-				//DataStoreFile.close();
+				dataNum++;
 			}
 			SLEEP(1);
 		} while (!kbhit());  //Function: kbhit()--if there isn't any input from the keyboard, return 0
 		DataStoreFile.close();
 	} while (false);
+
+	// Add another Step 3.5 : store data into array data[] , for next FFT
+	int lines = dataNum;
+	float *data = new float[lines];
+	int j = 0;
+	ifstream file;
+	file.open("data.txt", ios::in);
+
+	while (!file.eof())
+	{
+		file >> data[j];
+		j++;
+	}
+	file.close();
 
 	// Step 4 : Close device and release any allocated resource.
 	instantAiCtrl->Dispose();
@@ -109,3 +127,28 @@ int main(int argc, char* argv[])
 	}
 	return 0;
 }
+
+/*
+int CountLines() // A function that counts the number of datas for FFT
+{
+	string filename = "data.txt";
+	ifstream file;
+	int n = 0;
+	string temp;
+	file.open(filename, ios::in);
+		if (file.fail())
+		{
+			return 0;
+		}
+		else
+		{
+			while (getline(file, temp))
+			{
+				n++;
+			}
+			return n;
+		}
+	file.close();
+}
+*/
+
