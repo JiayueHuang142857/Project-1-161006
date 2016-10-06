@@ -1,0 +1,164 @@
+function varargout = GUI_proj1_160928(varargin)
+% GUI_PROJ1_160928 MATLAB code for GUI_proj1_160928.fig
+%      GUI_PROJ1_160928, by itself, creates a new GUI_PROJ1_160928 or raises the existing
+%      singleton*.
+%
+%      H = GUI_PROJ1_160928 returns the handle to a new GUI_PROJ1_160928 or the handle to
+%      the existing singleton*.
+%
+%      GUI_PROJ1_160928('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in GUI_PROJ1_160928.M with the given input arguments.
+%
+%      GUI_PROJ1_160928('Property','Value',...) creates a new GUI_PROJ1_160928 or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before GUI_proj1_160928_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to GUI_proj1_160928_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help GUI_proj1_160928
+
+% Last Modified by GUIDE v2.5 30-Sep-2016 13:50:08
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @GUI_proj1_160928_OpeningFcn, ...
+                   'gui_OutputFcn',  @GUI_proj1_160928_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before GUI_proj1_160928 is made visible.
+function GUI_proj1_160928_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to GUI_proj1_160928 (see VARARGIN)
+
+% Choose default command line output for GUI_proj1_160928
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+setappdata(0,'axes1',axes1);
+% UIWAIT makes GUI_proj1_160928 wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = GUI_proj1_160928_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+
+function RateInput_Callback(hObject, eventdata, handles)
+% hObject    handle to RateInput (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of RateInput as text
+%        str2double(get(hObject,'String')) returns contents of RateInput as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function RateInput_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to RateInput (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in StartButton.
+% ======================================================================= %
+function StartButton_Callback(hObject, eventdata, handles)
+% hObject    handle to StartButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+SamplingRate = get(handles.RateInput,'String');
+SamplingRate = str2num(SamplingRate);
+setappdata(0,'RateInput',SamplingRate);
+InstantAI;
+% a = 1;
+% while (a<=10)
+%   global DataStore;
+% % % max = length(DataStore);
+% % % min = max - 10;
+% % % if min<=0
+% % %     min = 0;
+% % % end
+% % % plot(DataStore(min:max));
+%   
+%   plot(DataStore);
+%   a = a+1;
+%   msgbox(num2str(a));
+% end
+% set(handles.axes1,'value',DataStore);
+
+
+
+% --- Executes on button press in StopButton.
+function StopButton_Callback(hObject, eventdata, handles)
+% hObject    handle to StopButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+%stop(t);
+%delete(t);
+
+
+
+
+%==================================================%
+% function TimerCallback(obj, event, instantAiCtrl, startChannel, ...
+%     channelCount, data)
+% DataFile = fopen('1.txt','w'); % open the file "1.txt" in order to write data
+% for j=0:(channelCount - 1)
+%     fprintf(DataFile , data.Get(j));
+% end
+
+
+% --- Executes on button press in ContinueButton.
+function ContinueButton_Callback(hObject, eventdata, handles)
+% hObject    handle to ContinueButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ExitButton.
+function ExitButton_Callback(hObject, eventdata, handles)
+% hObject    handle to ExitButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+t = getappdata(0,'t_');
+stop(t);
+delete(t);
+instantAiCtrl = getappdata(0,'instantAiCtrl_');
+instantAiCtrl.Dispose();
+msgbox('Sampling Stopped!');
