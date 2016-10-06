@@ -21,8 +21,6 @@ end
 % --- Executes just before GUI_proj1_160928 is made visible.
 function GUI_proj1_160928_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
-
-% Update handles structure
 guidata(hObject, handles);
 handles.output = hObject;
 handle1 = gcf;
@@ -30,12 +28,11 @@ setappdata(0,'handle1',handle1);
 setappdata(handle1,'PlotAxes',handles.axes1);
 SampleRate = 1;
 setappdata(handle1,'SampleRate',SampleRate);
-% === %
 FileNum = 0;
 setappdata(handle1,'FileNum',FileNum);
 SignalSave = [];
 setappdata(handle1,'SignalSave',SignalSave);
-z = 1;
+z = 2;
 setappdata(handle1,'Zoom',z);
 % set(handles.figure1, 'DeleteFcn', {@DeleteFcn});
 % === %
@@ -43,22 +40,20 @@ h = line;
 set(h,'Marker','*','LineStyle','none');
 h.Parent = handles.axes1;
 setappdata(handle1,'LineHandle',h);
-% === %
-% set(handles.Srate_Reset, 'Enable','off');
-% set(handles.Start_Rec, 'Enable','off');
-% set(handles.Stop_Rec, 'Enable','off');
-% set(handles.Plus, 'Enable','off');
-% set(handles.Minus, 'Enable','off');
-% === %
+% =============== Buttons Settings =============== %
+set(handles.ConfirmButton, 'Enable','on');
+set(handles.StartButton, 'Enable','off');
+set(handles.StopButton, 'Enable','off');
+set(handles.ContinueButton, 'Enable','off');
+set(handles.ExitButton, 'Enable','on');
+set(handles.Xadd, 'Enable','off');
+set(handles.Xminus, 'Enable','off');
+set(handles.Yadd, 'Enable','off');
+set(handles.Yminus, 'Enable','off');
+% ================================================ %
 
 % --- Outputs from this function are returned to the command line.
 function varargout = GUI_proj1_160928_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
 varargout{1} = handles.output;
 
 
@@ -88,9 +83,17 @@ end
 % --- Executes on button press in StartButton.
 % ======================================================================= %
 function StartButton_Callback(hObject, eventdata, handles)
-% hObject    handle to StartButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+% =============== Buttons Settings =============== %
+set(handles.ConfirmButton, 'Enable','off');
+set(handles.StartButton, 'Enable','off');
+set(handles.StopButton, 'Enable','on');
+set(handles.ContinueButton, 'Enable','off');
+set(handles.ExitButton, 'Enable','on');
+set(handles.Xadd, 'Enable','on');
+set(handles.Xminus, 'Enable','on');
+set(handles.Yadd, 'Enable','on');
+set(handles.Yminus, 'Enable','on');
+% ================================================ %
 handle1 = getappdata(0,'handle1');
 SampleRate = get(handles.RateInput,'string');
 SampleRate = str2num(SampleRate);
@@ -98,8 +101,6 @@ setappdata(handle1,'SampleRate',SampleRate);
 setappdata(0,'SampleRate',SampleRate);
 h = getappdata(handle1,'LineHandle');
 set(h,'XData',[],'YData',[]);
-% set(handles.Stop_Rec, 'Enable','on');
-% set(handles.Start_Rec, 'Enable','off');
 PointNum = 0;
 setappdata(handle1,'PointNum',PointNum);
 z = 1;
@@ -111,39 +112,107 @@ InstantAI();
 
 % --- Executes on button press in StopButton.
 function StopButton_Callback(hObject, eventdata, handles)
-% hObject    handle to StopButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-%stop(t);
-%delete(t);
+% =============== Buttons Settings =============== %
+set(handles.ConfirmButton, 'Enable','off');
+set(handles.StartButton, 'Enable','off');
+set(handles.StopButton, 'Enable','off');
+set(handles.ContinueButton, 'Enable','on');
+set(handles.ExitButton, 'Enable','on');
+set(handles.Xadd, 'Enable','off');
+set(handles.Xminus, 'Enable','off');
+set(handles.Yadd, 'Enable','off');
+set(handles.Yminus, 'Enable','off');
+% ================================================ %
+handle1 = getappdata(0,'handle1');
+SignalSave = getappdata(handle1,'SignalSave');
+FileNum = getappdata(handle1,'FileNum');
+save(['Signal',int2str(FileNum)],'SignalSave');
+SignalSave = [];
+FileNum = FileNum+1;
+setappdata(handle1,'SignalSave',SignalSave);
+setappdata(handle1,'FileNum',FileNum);
+
+t = getappdata(handle1,'TimerHandle');
+stop(t);
+delete(t);
+
+instantAiCtrl = getappdata(handle1,'instantAiCtrl');
+instantAiCtrl.Dispose();
 
 
 
 
-%==================================================%
-% function TimerCallback(obj, event, instantAiCtrl, startChannel, ...
-%     channelCount, data)
-% DataFile = fopen('1.txt','w'); % open the file "1.txt" in order to write data
-% for j=0:(channelCount - 1)
-%     fprintf(DataFile , data.Get(j));
-% end
 
 
 % --- Executes on button press in ContinueButton.
 function ContinueButton_Callback(hObject, eventdata, handles)
-% hObject    handle to ContinueButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
+% =============== Buttons Settings =============== %
+set(handles.ConfirmButton, 'Enable','off');
+set(handles.StartButton, 'Enable','off');
+set(handles.StopButton, 'Enable','on');
+set(handles.ContinueButton, 'Enable','off');
+set(handles.ExitButton, 'Enable','on');
+set(handles.Xadd, 'Enable','on');
+set(handles.Xminus, 'Enable','on');
+set(handles.Yadd, 'Enable','on');
+set(handles.Yminus, 'Enable','on');
+% ================================================ %
 
 % --- Executes on button press in ExitButton.
 function ExitButton_Callback(hObject, eventdata, handles)
-% hObject    handle to ExitButton (see GCBO)
+% =============== Buttons Settings =============== %
+set(handles.ConfirmButton, 'Enable','off');
+set(handles.StartButton, 'Enable','off');
+set(handles.StopButton, 'Enable','off');
+set(handles.ContinueButton, 'Enable','off');
+set(handles.ExitButton, 'Enable','on');
+set(handles.Xadd, 'Enable','off');
+set(handles.Xminus, 'Enable','off');
+set(handles.Yadd, 'Enable','off');
+set(handles.Yminus, 'Enable','off');
+% ================================================ %
+close;
+
+
+
+
+% --- Executes on button press in ConfirmButton.
+function ConfirmButton_Callback(hObject, eventdata, handles)
+% =============== Buttons Settings =============== %
+set(handles.ConfirmButton, 'Enable','off');
+set(handles.StartButton, 'Enable','on');
+set(handles.StopButton, 'Enable','off');
+set(handles.ContinueButton, 'Enable','off');
+set(handles.ExitButton, 'Enable','on');
+set(handles.Xadd, 'Enable','off');
+set(handles.Xminus, 'Enable','off');
+set(handles.Yadd, 'Enable','off');
+set(handles.Yminus, 'Enable','off');
+% ================================================ %
+
+% --- Executes on button press in Yadd.
+function Yadd_Callback(hObject, eventdata, handles)
+% hObject    handle to Yadd (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-t = getappdata(0,'t_');
-stop(t);
-delete(t);
-instantAiCtrl = getappdata(0,'instantAiCtrl_');
-instantAiCtrl.Dispose();
-msgbox('Sampling Stopped!');
+
+
+% --- Executes on button press in Yminus.
+function Yminus_Callback(hObject, eventdata, handles)
+% hObject    handle to Yminus (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Xadd.
+function Xadd_Callback(hObject, eventdata, handles)
+% hObject    handle to Xadd (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Xminus.
+function Xminus_Callback(hObject, eventdata, handles)
+% hObject    handle to Xminus (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

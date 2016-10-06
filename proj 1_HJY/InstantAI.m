@@ -19,7 +19,7 @@ function InstantAI()
     % errorCode = Automation.BDaq.ErrorCode();
     setappdata(handle1,'instantAiCtrl',instantAiCtrl); 
     t = timer('TimerFcn', {@TimerCallback, instantAiCtrl, startChannel, ...
-        channelCount, data}, 'period', round(1000/SampleRate)/1000, 'executionmode', 'fixedrate', ...
+        channelCount, data}, 'period',round(1000/SampleRate)/1000, 'executionmode', 'fixedrate', ...
         'StartDelay', 1);
     start(t);
     setappdata(handle1,'TimerHandle',t);
@@ -59,12 +59,14 @@ function TimerCallback(obj, event, instantAiCtrl, startChannel, ...
       XTmp = XTmp(1024*512:1024*1024);
       YTmp = YTmp(1024*512:1024*1024);
   end
-  if (length(SignalSave)<SampleRate*10)
+  if (length(SignalSave)<20)
       set(h,'XData',[XTmp,TimeNum],'YData',[YTmp,DataNow]);
-      set(PlotAxes,'Xlim',[TimeNum-5*z,TimeNum+0.2*z],'Ylim',[-1.5,1.5],'XTick',[round(TimeNum-5*z):z:round(TimeNum+0.2*z)]);
+      set(PlotAxes,'Xlim',[TimeNum-10*z,TimeNum+1*z],'Ylim',[-15,15],'XTick',[round(TimeNum-10*z):z:round(TimeNum+1*z)]);
       setappdata(handle1,'SignalSave',SignalSave);
-  else       
-      save(['Signal',int2str(FileNum)],'SignalSave');
+  else  
+      set(h,'XData',[XTmp,TimeNum],'YData',[YTmp,DataNow]);
+      set(PlotAxes,'Xlim',[TimeNum-10*z,TimeNum+1*z],'Ylim',[-15,15],'XTick',[round(TimeNum-10*z):z:round(TimeNum+1*z)]);
+%       save(['Signal',int2str(FileNum)],'SignalSave');
       SignalSave = [];
       FileNum = FileNum+1;
       setappdata(handle1,'SignalSave',SignalSave);
